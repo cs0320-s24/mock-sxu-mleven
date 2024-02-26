@@ -52,7 +52,6 @@ export function REPLInput(props: REPLInputProps) {
     } else if (command.startsWith("load_file")) {
       const filePath = command.split(" ")[1];
       return loadFile(filePath);
-      //return { filePath } + "loaded successfully.";
     } else if (command == "view") {
       viewFile();
       return 'Now viewing file: "' + loadedFileName + '".';
@@ -65,7 +64,7 @@ export function REPLInput(props: REPLInputProps) {
     const fileName = filePath;
     if (!mockedDataMap.has(filePath)) {
       alert('The file: "' + fileName + '" does not exist.');
-      return false;
+      return "An error occurred. The inputted file does not exist.";
     } else {
       loadedFile = mockedDataMap.get(filePath);
       loadedFileName = filePath;
@@ -73,7 +72,7 @@ export function REPLInput(props: REPLInputProps) {
 
     if (loadedFile.length == 0) {
       alert('The file: "' + fileName + '" is empty!');
-      return false;
+      return "An error occurred. The inputted file has not been loaded.";
     }
     return 'File: "' + loadedFileName + '" was loaded successfully';
   }
@@ -81,7 +80,7 @@ export function REPLInput(props: REPLInputProps) {
   function viewFile() {
     var table = document.getElementById("table");
     if (!table) {
-      return false;
+      return "An error occurred. The inputted file can not be viewed";
     }
 
     //Code adapted from this page: https://stackoverflow.com/questions/34494032/loading-a-csv-file-into-an-html-table-using-javascript
