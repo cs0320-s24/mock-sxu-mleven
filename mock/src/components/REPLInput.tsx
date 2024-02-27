@@ -42,7 +42,7 @@ export function REPLInput(props: REPLInputProps) {
     setCommandString("");
   }
 
-  function runCommand(command: string) {
+  function runCommand(command: string): string {
     if (command === "mode brief") {
       setMode("brief");
       return "Switched to brief mode";
@@ -55,9 +55,63 @@ export function REPLInput(props: REPLInputProps) {
     } else if (command == "view") {
       viewFile();
       return 'Now viewing file: "' + loadedFileName + '".';
+    } else if (command.startsWith("search")) {
+      const args = command.split(" ").slice(1);
+      if (args.length !== 2) {
+        return "Invalid command. Usage: search <column> <value>";
+      }
+      const [column, value] = args;
+      return searchFile(column, value);
     }
 
-    return command;
+    return command || "Command executed with no return value";
+  }
+
+  function searchFile(column: string, value: string): string {
+    var rowDisp = document.getElementById("rowDisp");
+    let columnIndex: number;
+    if (isNaN(Number(column))) {
+      columnIndex = loadedFile[0].indexOf(column);
+      if (columnIndex === -1) {
+        return `Column "${column}" not found.`;
+      }
+    } else {
+      columnIndex = Number(column);
+      if (columnIndex < 0 || columnIndex >= loadedFile[0].length) {
+        return `Column index ${column} out of range.`;
+      }
+    }
+
+    const matchingRows = loadedFile
+      .slice(1)
+      .filter((row) => row[columnIndex] === value);
+    if (matchingRows.length === 0) {
+      return `No rows found with value "${value}" in column "${column}".`;
+    }
+
+    if (rowDisp) {
+      rowDisp.innerHTML = " ";
+      let rowToString = "<tr>";
+      loadedFile[0].forEach((header) => {
+        rowToString += `<th>${header}</th>`;
+      });
+      rowToString += "</tr>";
+
+      matchingRows.forEach((row) => {
+        rowToString += "<tr>";
+        row.forEach((cell) => {
+          rowToString += `<td>${cell}</td>`;
+        });
+        rowToString += "</tr>";
+      });
+
+      rowDisp.innerHTML = rowToString;
+    } else {
+      return "Error: Element with id 'rowDisp' not found.";
+    }
+
+    // Add a default return statement
+    return "Search completed successfully";
   }
 
   function loadFile(filePath: string) {
@@ -109,6 +163,7 @@ export function REPLInput(props: REPLInputProps) {
   return (
     <div className="repl-input">
       <table id="table"></table>
+      <table id="rowDisp"></table>
       <fieldset>
         <legend>Enter a command:</legend>
         <ControlledInput
