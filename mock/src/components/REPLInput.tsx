@@ -70,12 +70,14 @@ export function REPLInput(props: REPLInputProps) {
     if (isNaN(Number(column))) {
       columnIndex = loadedFile[0].indexOf(column);
       if (columnIndex === -1) {
-        return `Column "${column}" not found.`;
+        alert(`Error: Column "${column}" not found.`);
+        return `An error occured. Column "${column}" not found.`;
       }
     } else {
       columnIndex = Number(column);
       if (columnIndex < 0 || columnIndex >= loadedFile[0].length) {
-        return `Column index ${column} out of range.`;
+        alert(`Error: Column index ${column} out of range.`);
+        return `An error occured. Column index ${column} out of range.`;
       }
     }
 
@@ -83,7 +85,8 @@ export function REPLInput(props: REPLInputProps) {
       .slice(1)
       .filter((row) => row[columnIndex] === value);
     if (matchingRows.length === 0) {
-      return `No rows found with value "${value}" in column "${column}".`;
+      alert(`Error: No rows found with value "${value}" in column "${column}".`);
+      return `An error occured. No rows found with value "${value}" in column "${column}".`;
     }
 
     if (rowDisp) {
@@ -104,7 +107,8 @@ export function REPLInput(props: REPLInputProps) {
 
       rowDisp.innerHTML = rowToString;
     } else {
-      return "Error: Element with id 'rowDisp' not found.";
+      alert("Error: Element with id 'rowDisp' not found.");
+      return "An error occurred. Element with id 'rowDisp' not found.";
     }
 
     // Add a default return statement
@@ -122,7 +126,7 @@ export function REPLInput(props: REPLInputProps) {
     }
 
     if (loadedFile.length == 0) {
-      alert('The file: "' + fileName + '" is empty!');
+      alert('Error: The file: "' + fileName + '" is empty!');
       return "An error occurred. The inputted file has not been loaded.";
     }
     return 'File: "' + loadedFileName + '" was loaded successfully';
@@ -131,13 +135,15 @@ export function REPLInput(props: REPLInputProps) {
   function viewFile() {
     //Checking if a file has been loaded
     if (loadedFile.length == 0) {
-      return "No file has been loaded.";
+      alert("Error: No file has been loaded.");
+      return "An error occured. No file has been loaded.";
     }
 
     //Finding elements on the page
     var table = document.getElementById("table");
     var searchTable = document.getElementById("rowDisp");
     if (!table || !searchTable) {
+      alert("Error: The inputted file can not be viewed");
       return "An error occurred. The inputted file can not be viewed";
     }
 

@@ -60,10 +60,32 @@ test("on page load, i see a button", async ({ page }) => {
   await expect(page.getByRole("button")).toBeVisible();
 });
 
-test("after I click the button, its label increments", async ({ page }) => {
-  // TODO WITH TA: Fill this in to test your button counter functionality!
-});
+// test("after I click the button, its label increments", async ({ page }) => {
+//   // TODO WITH TA: Fill this in to test your button counter functionality!
+// });
 
-test("after I click the button, my command gets pushed", async ({ page }) => {
-  // TODO: Fill this in to test your button push functionality!
-});
+// test("after I click the button, my command gets pushed", async ({ page }) => {
+//   // TODO: Fill this in to test your button push functionality!
+// });
+
+
+test("i can change the mode to verbose mode, and then back to brief more", async ({page}) =>{
+
+})
+
+test("i can load in a file (mocked data)", async ({
+  page,
+}) => {});
+
+test("i can load in a file (mocked data) then view it", async ({ page }) => {});
+
+test("i can search in a file I am viewing", async ({ page }) => {});
+
+test("i can search in a file I have loaded but am not viewing", async ({ page }) => {});
+
+test("i am prompted if i try to load a file that does not exist", async ({ page }) => {});
+
+test("i am prompted if i try to load an empty file", async ({ page }) => {});
+
+
+
