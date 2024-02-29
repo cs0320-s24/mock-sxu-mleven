@@ -12,3 +12,7 @@
   font-size: calc(1px + 2vmin);
   color: white;
 }
+
+h1 {
+  height: 20px;
+}

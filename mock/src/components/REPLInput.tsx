@@ -17,12 +17,12 @@ interface REPLInputProps {
 var loadedFile = new Array<Array<String>>();
 var loadedFileName = "";
 
+
 export function REPLInput(props: REPLInputProps) {
+  
   const [commandString, setCommandString] = useState<string>("");
   const [count, setCount] = useState<number>(0);
   const [mode, setMode] = useState<string>("brief");
-
-  // var table = document.getElementById("table");
 
   var mockedDataMap = new Map();
   mockedDataMap.set("property", PROPERTY_DATA);
