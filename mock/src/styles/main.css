@@ -14,39 +14,72 @@
   margin: auto;
   display: block;
   overflow: scroll;
+  background-color: #a1b7ff;
 }
 
 .repl-input {
-  margin: auto;
+  margin-top: 20px;
   height: 10vh;
 }
+
 .repl-command-box {
   width: 90%;
   margin: auto;
   display: block;
 }
-button {
-  margin: auto;
-  display: block;
+
+.container {
+  padding-bottom: 10px;
+}
+
+.top-container {
+  overflow: hidden;
 }
 
 table {
   height: 30vh;
-  width: 100%;
   border: 1px solid;
-  margin: auto;
+  width: auto;
   display: block;
+  margin: auto;
   overflow: scroll;
   table-layout: auto;
 }
 
-th, td {
+.all-table {
+  float: left;
+  width: 48%;
   padding: 10px;
-  border: 1px solid;
-  text-align:center;
+  align-self: center;
 }
 
-th {
-  background-color: greenyellow;
+.all-table th {
+  background-color: #fca1ff;
   font-weight: bold;
+}
+
+.view-table {
+  float: right;
+  width: 48%;
+  padding: 10px;
+  align-self: center;
+}
+
+.view-table th {
+  background-color: #c3a1ff;
+  font-weight: bold;
+}
+
+th,
+td {
+  padding: 10px;
+  border: 1px solid;
+  text-align: center;
+}
+
+button {
+  background-color: #b8d4fd;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 10px 20px;
 }

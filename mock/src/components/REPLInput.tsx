@@ -133,7 +133,8 @@ export function REPLInput(props: REPLInputProps) {
 
   function viewFile() {
     var table = document.getElementById("table");
-    if (!table) {
+    var searchTable = document.getElementById("rowDisp");
+    if (!table || !searchTable) {
       return "An error occurred. The inputted file can not be viewed";
     }
 
@@ -141,15 +142,20 @@ export function REPLInput(props: REPLInputProps) {
     table.innerHTML = "";
     var tableContent = "";
 
-    // Add table header row
+    //Clearing the search table if a new file is being viewed to avoid confusion for the user
+    searchTable.innerHTML = "";
+
+    // Add table header row with first row of CSV
     var headerRow = "<tr>";
     loadedFile[0].forEach(function (header) {
       headerRow += "<th>" + header + "</th>";
     });
     headerRow += "</tr>";
 
+    //Adding it to the content of the table
     tableContent += headerRow;
 
+    //Creating rows and adding cells
     loadedFile.slice(1).forEach(function (row) {
       tableContent += "<tr>";
       row.forEach(function (cell) {
@@ -160,21 +166,30 @@ export function REPLInput(props: REPLInputProps) {
     table.innerHTML = tableContent;
   }
 
-  return (
+return (
+  <div className="container">
+    <div className="top-container">
+      <div className="all-table"> 
+        <table id="table"></table>
+      </div>
+      <div className="view-table">
+        <table id="rowDisp"> </table>
+      </div>
+    </div>
     <div className="repl-input">
-      <table id="table"></table>
-      <table id="rowDisp"></table>
       <fieldset>
         <legend>Enter a command:</legend>
-        <ControlledInput
-          value={commandString}
-          setValue={setCommandString}
-          ariaLabel={"Command input"}
-        />
+        <div className="repl-command-box">
+          <ControlledInput
+            value={commandString}
+            setValue={setCommandString}
+            ariaLabel={"Command input"}
+          />
+          <button onClick={() => handleSubmit(commandString)}>
+            Submitted {count} times!
+          </button>
+        </div>
       </fieldset>
-      <button onClick={() => handleSubmit(commandString)}>
-        Submitted {count} times!
-      </button>
     </div>
-  );
-}
+  </div>
+)};
