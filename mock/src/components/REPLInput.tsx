@@ -17,9 +17,7 @@ interface REPLInputProps {
 var loadedFile = new Array<Array<String>>();
 var loadedFileName = "";
 
-
 export function REPLInput(props: REPLInputProps) {
-  
   const [commandString, setCommandString] = useState<string>("");
   const [count, setCount] = useState<number>(0);
   const [mode, setMode] = useState<string>("brief");
@@ -53,8 +51,7 @@ export function REPLInput(props: REPLInputProps) {
       const filePath = command.split(" ")[1];
       return loadFile(filePath);
     } else if (command == "view") {
-      viewFile();
-      return 'Now viewing file: "' + loadedFileName + '".';
+      return viewFile();
     } else if (command.startsWith("search")) {
       const args = command.split(" ").slice(1);
       if (args.length !== 2) {
@@ -132,6 +129,12 @@ export function REPLInput(props: REPLInputProps) {
   }
 
   function viewFile() {
+    //Checking if a file has been loaded
+    if (loadedFile.length == 0) {
+      return "No file has been loaded.";
+    }
+
+    //Finding elements on the page
     var table = document.getElementById("table");
     var searchTable = document.getElementById("rowDisp");
     if (!table || !searchTable) {
@@ -164,32 +167,36 @@ export function REPLInput(props: REPLInputProps) {
       tableContent += "</tr>";
     });
     table.innerHTML = tableContent;
+
+    //Returns this if successfull
+    return 'Now viewing file: "' + loadedFileName + '".';
   }
 
-return (
-  <div className="container">
-    <div className="top-container">
-      <div className="all-table"> 
-        <table id="table"></table>
-      </div>
-      <div className="view-table">
-        <table id="rowDisp"> </table>
-      </div>
-    </div>
-    <div className="repl-input">
-      <fieldset>
-        <legend>Enter a command:</legend>
-        <div className="repl-command-box">
-          <ControlledInput
-            value={commandString}
-            setValue={setCommandString}
-            ariaLabel={"Command input"}
-          />
-          <button onClick={() => handleSubmit(commandString)}>
-            Submitted {count} times!
-          </button>
+  return (
+    <div className="container">
+      <div className="top-container">
+        <div className="all-table">
+          <table id="table"></table>
         </div>
-      </fieldset>
+        <div className="view-table">
+          <table id="rowDisp"> </table>
+        </div>
+      </div>
+      <div className="repl-input">
+        <fieldset>
+          <legend>Enter a command:</legend>
+          <div className="repl-command-box">
+            <ControlledInput
+              value={commandString}
+              setValue={setCommandString}
+              ariaLabel={"Command input"}
+            />
+            <button onClick={() => handleSubmit(commandString)}>
+              Submitted {count} times!
+            </button>
+          </div>
+        </fieldset>
+      </div>
     </div>
-  </div>
-)};
+  );
+}
