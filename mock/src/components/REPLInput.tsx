@@ -8,6 +8,7 @@ import {
   NEIGHBORHOOD_DATA,
   EMPTY,
 } from "./mocks/mockedData.js";
+import { fileURLToPath } from "url";
 
 interface REPLInputProps {
   history: string[];
@@ -28,12 +29,41 @@ export function REPLInput(props: REPLInputProps) {
   mockedDataMap.set("neighborhood", NEIGHBORHOOD_DATA);
   mockedDataMap.set("empty", EMPTY);
 
+  // const commandHandlers(): Record<string, Function> = {
+  //   "mode brief": () => setMode("brief"),
+  //   "mode verbose": () => setMode("verbose"),
+  //   load_file: (filePath: string) => loadFile(filePath),
+  //   view: () => viewFile(),
+  // };
+
+
+  //   ["mode brief", () => setMode("brief")],
+  //   ["mode verbose", () => setMode("verbose")],
+  //   ["load_file", (filePath: string) => loadFile(filePath)],
+  // );
+
+  //   "mode brief": () => setMode("brief"),
+  //   "mode verbose": () => setMode("verbose"),
+  //   load_file: (filePath: string) => loadFile(filePath),
+  //   view: () => viewFile(),
+  // };
+
+  function newRunCommand(command: string): string {
+    let handler = menuCommand[command];
+    if (handler) {
+      return handler();
+    } else {
+      return `Unknown command: ${command}`;
+    }
+  }
+
   function handleSubmit(command: string) {
     setCount(count + 1);
     let formattedCommand = command;
     if (mode === "verbose") {
       formattedCommand = `Command: ${command}\nOutput: ${runCommand(command)}`;
     } else {
+      // formattedCommand = newRunCommand(command);
       formattedCommand = runCommand(command);
     }
     props.setHistory([...props.history, formattedCommand]);
@@ -85,7 +115,9 @@ export function REPLInput(props: REPLInputProps) {
       .slice(1)
       .filter((row) => row[columnIndex] === value);
     if (matchingRows.length === 0) {
-      alert(`Error: No rows found with value "${value}" in column "${column}".`);
+      alert(
+        `Error: No rows found with value "${value}" in column "${column}".`
+      );
       return `An error occured. No rows found with value "${value}" in column "${column}".`;
     }
 
