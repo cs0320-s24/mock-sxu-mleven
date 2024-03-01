@@ -51,6 +51,7 @@ export function REPLInput(props: REPLInputProps) {
   mockedDataMap.set("neighborhood", NEIGHBORHOOD_DATA);
   mockedDataMap.set("empty", EMPTY);
 
+
   const commandRegistry = useRef(new CommandRegistry()).current;
 
   commandRegistry.registerCommand("mode", (args) => {
@@ -231,7 +232,10 @@ export function REPLInput(props: REPLInputProps) {
               setValue={setCommandString}
               ariaLabel={"Command input"}
             />
-            <button onClick={() => handleSubmit(commandString)}>
+            <button
+              aria-label="submit-button"
+              onClick={() => handleSubmit(commandString)}
+            >
               Submitted {count} times!
             </button>
           </div>
