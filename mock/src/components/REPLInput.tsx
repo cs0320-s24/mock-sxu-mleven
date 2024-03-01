@@ -51,33 +51,6 @@ export function REPLInput(props: REPLInputProps) {
   mockedDataMap.set("neighborhood", NEIGHBORHOOD_DATA);
   mockedDataMap.set("empty", EMPTY);
 
-  // const commandHandlers(): Record<string, Function> = {
-  //   "mode brief": () => setMode("brief"),
-  //   "mode verbose": () => setMode("verbose"),
-  //   load_file: (filePath: string) => loadFile(filePath),
-  //   view: () => viewFile(),
-  // };
-
-  //   ["mode brief", () => setMode("brief")],
-  //   ["mode verbose", () => setMode("verbose")],
-  //   ["load_file", (filePath: string) => loadFile(filePath)],
-  // );
-
-  //   "mode brief": () => setMode("brief"),
-  //   "mode verbose": () => setMode("verbose"),
-  //   load_file: (filePath: string) => loadFile(filePath),
-  //   view: () => viewFile(),
-  // };
-  /*
-  function newRunCommand(command: string): string {
-    let handler = menuCommand[command];
-    if (handler) {
-      return handler();
-    } else {
-      return `Unknown command: ${command}`;
-    }
-  }
-  */
   const commandRegistry = new CommandRegistry();
   commandRegistry.registerCommand("mode brief", () => {
     setMode("brief");
@@ -258,7 +231,10 @@ export function REPLInput(props: REPLInputProps) {
               setValue={setCommandString}
               ariaLabel={"Command input"}
             />
-            <button onClick={() => handleSubmit(commandString)}>
+            <button
+              aria-label="submit-button"
+              onClick={() => handleSubmit(commandString)}
+            >
               Submitted {count} times!
             </button>
           </div>
