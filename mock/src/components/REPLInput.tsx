@@ -1,5 +1,5 @@
 import "../styles/main.css";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, useRef } from "react";
 import { ControlledInput } from "./ControlledInput";
 
 import {
@@ -51,41 +51,38 @@ export function REPLInput(props: REPLInputProps) {
   mockedDataMap.set("neighborhood", NEIGHBORHOOD_DATA);
   mockedDataMap.set("empty", EMPTY);
 
-  // const commandHandlers(): Record<string, Function> = {
-  //   "mode brief": () => setMode("brief"),
-  //   "mode verbose": () => setMode("verbose"),
-  //   load_file: (filePath: string) => loadFile(filePath),
-  //   view: () => viewFile(),
-  // };
+  const commandRegistry = useRef(new CommandRegistry()).current;
 
-  //   ["mode brief", () => setMode("brief")],
-  //   ["mode verbose", () => setMode("verbose")],
-  //   ["load_file", (filePath: string) => loadFile(filePath)],
-  // );
-
-  //   "mode brief": () => setMode("brief"),
-  //   "mode verbose": () => setMode("verbose"),
-  //   load_file: (filePath: string) => loadFile(filePath),
-  //   view: () => viewFile(),
-  // };
-  /*
-  function newRunCommand(command: string): string {
-    let handler = menuCommand[command];
-    if (handler) {
-      return handler();
+  commandRegistry.registerCommand("mode", (args) => {
+    if (args[0] === "brief") {
+      setMode("brief");
+      return "Switched to brief mode";
+    } else if (args[0] === "verbose") {
+      setMode("verbose");
+      return "Switched to verbose mode";
     } else {
-      return `Unknown command: ${command}`;
+      return `Invalid mode: ${args[0]}`;
     }
-  }
-  */
-  const commandRegistry = new CommandRegistry();
-  commandRegistry.registerCommand("mode brief", () => {
-    setMode("brief");
-    return "Switched to brief mode";
   });
-  commandRegistry.registerCommand("mode verbose", () => {
-    setMode("verbose");
-    return "Switched to verbose mode";
+
+  commandRegistry.registerCommand("load_file", (args) => {
+    if (args.length !== 1) {
+      return "Invalid command. Usage: load_file <filePath>";
+    }
+    const filePath = args[0];
+    return loadFile(filePath);
+  });
+
+  commandRegistry.registerCommand("view", () => {
+    return viewFile();
+  });
+
+  commandRegistry.registerCommand("search", (args) => {
+    if (args.length !== 2) {
+      return "Invalid command. Usage: search <column> <value>";
+    }
+    const [column, value] = args;
+    return searchFile(column, value);
   });
 
   function handleSubmit(command: string) {
@@ -97,30 +94,6 @@ export function REPLInput(props: REPLInputProps) {
     }
     props.setHistory([...props.history, formattedCommand]);
     setCommandString("");
-  }
-
-  function runCommand(command: string): string {
-    if (command === "mode brief") {
-      setMode("brief");
-      return "Switched to brief mode";
-    } else if (command === "mode verbose") {
-      setMode("verbose");
-      return "Switched to verbose mode";
-    } else if (command.startsWith("load_file")) {
-      const filePath = command.split(" ")[1];
-      return loadFile(filePath);
-    } else if (command == "view") {
-      return viewFile();
-    } else if (command.startsWith("search")) {
-      const args = command.split(" ").slice(1);
-      if (args.length !== 2) {
-        return "Invalid command. Usage: search <column> <value>";
-      }
-      const [column, value] = args;
-      return searchFile(column, value);
-    }
-
-    return command || "Command executed with no return value";
   }
 
   function searchFile(column: string, value: string): string {
