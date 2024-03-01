@@ -6,19 +6,38 @@ Project Name: Mock
 
 Team Members: Jack Xu and Malin Leven
 
-Estimated time to finish project:
+Estimated time to finish project: 10 hours each
 
 Repo link: https://github.com/cs0320-s24/mock-sxu-mleven
 
 # Design Choices
 
+Components:
+- mocks contains mockedData in JSON format and TS format, this is what we use to test our program
+- The rest of the .tsx files are what make up the program
+- The bulk of the program is written in REPLInput.tsx
+
+Styles:
+- main.tss contains our specs for various components on the html
+
+Tests:
+- App.spec.ts contains all our testing
+
+index.html contains the main html
+
 # Errors/Bugs
+
+- There are no errors or bugs
 
 # Tests
 
+- We have extensive testing for every functionality as well as edge cases
+- To run tests, open a new terminal in VSCode, cd mock, and then run 'npx playwright test', then to view the results,
+  run 'npx playwright show-report'
+
 # How to
 
-- Open a new terminal in VSCode and run 'npm start' to start the server on your local host. This will open a server at
+- Open a new terminal in VSCode, cd mock, and then run 'npm start' to start the server on your local host. This will open a server at
   (http://localhost:8000/)
 - Click the login button
 - In the command box, enter your command of choice then press the button to perform the command
@@ -29,6 +48,6 @@ Repo link: https://github.com/cs0320-s24/mock-sxu-mleven
 
 # Collaboration
 
-_(state all of your sources of collaboration past your project partner. Please refer to the course's collaboration policy for any further questions.)_
+Some code was adapted from this page: https://stackoverflow.com/questions/34494032/loading-a-csv-file-into-an-html-table-using-javascript
 
-Pushing from branch-a!
+Some information to do with testing was learnt from this page: https://stackoverflow.com/questions/46377955/puppeteer-page-evaluate-queryselectorall-return-empty-objects

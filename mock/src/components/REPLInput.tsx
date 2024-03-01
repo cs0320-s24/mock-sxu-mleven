@@ -51,7 +51,6 @@ export function REPLInput(props: REPLInputProps) {
   mockedDataMap.set("neighborhood", NEIGHBORHOOD_DATA);
   mockedDataMap.set("empty", EMPTY);
 
-
   const commandRegistry = useRef(new CommandRegistry()).current;
 
   commandRegistry.registerCommand("mode", (args) => {
