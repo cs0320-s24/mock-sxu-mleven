@@ -8,7 +8,7 @@ import {
   NEIGHBORHOOD_DATA,
   EMPTY,
 } from "./mocks/mockedData.js";
-import { fileURLToPath } from "url";
+//import { fileURLToPath } from "url";
 
 interface REPLInputProps {
   history: string[];
@@ -17,6 +17,28 @@ interface REPLInputProps {
 
 var loadedFile = new Array<Array<String>>();
 var loadedFileName = "";
+
+export interface REPLFunction {
+  (args: Array<string>): string | string[][];
+}
+
+class CommandRegistry {
+  private commands = new Map<string, REPLFunction>();
+
+  registerCommand(name: string, func: REPLFunction) {
+    this.commands.set(name, func);
+  }
+
+  runCommand(command: string): string | string[][] {
+    const [name, ...args] = command.split(" ");
+    const func = this.commands.get(name);
+    if (func) {
+      return func(args);
+    } else {
+      return `Unknown command: ${name}`;
+    }
+  }
+}
 
 export function REPLInput(props: REPLInputProps) {
   const [commandString, setCommandString] = useState<string>("");
@@ -36,7 +58,6 @@ export function REPLInput(props: REPLInputProps) {
   //   view: () => viewFile(),
   // };
 
-
   //   ["mode brief", () => setMode("brief")],
   //   ["mode verbose", () => setMode("verbose")],
   //   ["load_file", (filePath: string) => loadFile(filePath)],
@@ -47,7 +68,7 @@ export function REPLInput(props: REPLInputProps) {
   //   load_file: (filePath: string) => loadFile(filePath),
   //   view: () => viewFile(),
   // };
-
+  /*
   function newRunCommand(command: string): string {
     let handler = menuCommand[command];
     if (handler) {
@@ -56,15 +77,23 @@ export function REPLInput(props: REPLInputProps) {
       return `Unknown command: ${command}`;
     }
   }
+  */
+  const commandRegistry = new CommandRegistry();
+  commandRegistry.registerCommand("mode brief", () => {
+    setMode("brief");
+    return "Switched to brief mode";
+  });
+  commandRegistry.registerCommand("mode verbose", () => {
+    setMode("verbose");
+    return "Switched to verbose mode";
+  });
 
   function handleSubmit(command: string) {
     setCount(count + 1);
-    let formattedCommand = command;
+    let result = commandRegistry.runCommand(command);
+    let formattedCommand = Array.isArray(result) ? result.join("\n") : result;
     if (mode === "verbose") {
-      formattedCommand = `Command: ${command}\nOutput: ${runCommand(command)}`;
-    } else {
-      // formattedCommand = newRunCommand(command);
-      formattedCommand = runCommand(command);
+      formattedCommand = `Command: ${command}\nOutput: ${formattedCommand}`;
     }
     props.setHistory([...props.history, formattedCommand]);
     setCommandString("");
