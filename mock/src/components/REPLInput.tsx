@@ -36,7 +36,6 @@ export function REPLInput(props: REPLInputProps) {
   //   view: () => viewFile(),
   // };
 
-
   //   ["mode brief", () => setMode("brief")],
   //   ["mode verbose", () => setMode("verbose")],
   //   ["load_file", (filePath: string) => loadFile(filePath)],
@@ -47,7 +46,7 @@ export function REPLInput(props: REPLInputProps) {
   //   load_file: (filePath: string) => loadFile(filePath),
   //   view: () => viewFile(),
   // };
-
+  /*
   function newRunCommand(command: string): string {
     let handler = menuCommand[command];
     if (handler) {
@@ -56,6 +55,7 @@ export function REPLInput(props: REPLInputProps) {
       return `Unknown command: ${command}`;
     }
   }
+  */
 
   function handleSubmit(command: string) {
     setCount(count + 1);
