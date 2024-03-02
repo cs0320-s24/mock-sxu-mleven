@@ -85,6 +85,11 @@ export function REPLInput(props: REPLInputProps) {
     return searchFile(column, value);
   });
 
+  const echoCommand: REPLFunction = (args) => {
+    return args.join(" ");
+  };
+  commandRegistry.registerCommand("echo", echoCommand);
+
   function handleSubmit(command: string) {
     setCount(count + 1);
     let result = commandRegistry.runCommand(command);

@@ -568,7 +568,7 @@ test("i can perform search which return several rows", async ({ page }) => {
 
   const tableVisible = await page.isVisible("#rowDisp");
 
-  // Assert that the table is visible
+  // Assert that the table is visible2
   expect(tableVisible).toBeTruthy();
 
   // Check if the table is filled with data
@@ -788,4 +788,27 @@ test("commands are case-insensitive", async ({ page }) => {
 
   // Assert that the command is found in the command history
   expect(commandExists).toBeTruthy();
+});
+
+/* ------------------------  TESTING INTERFACE ------------------------  */
+
+test("i can use the echo command to repeat text", async ({ page }) => {
+  await page.goto("http://localhost:8000/");
+  await page.getByLabel("Login").click();
+
+  const testCommand = "echo Hello, world!";
+
+  await page.getByLabel("Command input").fill(testCommand);
+  await page.getByLabel("submit-button").click();
+
+  const commandOutputExists = await page.evaluate((outputText) => {
+    const commandElements = Array.from(
+      document.querySelectorAll(".repl-history p")
+    );
+    return commandElements.some((element) =>
+      element.textContent.includes(outputText)
+    );
+  }, "Hello, world!");
+
+  expect(commandOutputExists).toBeTruthy();
 });
